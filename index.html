@@ -691,10 +691,20 @@ async function setup(config) {
     watchPlan(requestedId);
   });
   control('signin').onclick = async () => {
+    control('signin').disabled = true;
     try {
       await authSdk.signInWithPopup(auth, new authSdk.GoogleAuthProvider());
-    } catch {
-      status.textContent = '로그인하지 못했습니다. 팝업 허용 여부를 확인하고 다시 시도하세요.';
+    } catch (error) {
+      const message = {
+        'auth/popup-blocked': '브라우저가 로그인 팝업을 차단했습니다. 이 사이트의 팝업을 허용하고 다시 시도하세요.',
+        'auth/popup-closed-by-user': '로그인 창이 닫혔습니다. 다시 로그인하세요.',
+        'auth/unauthorized-domain': '현재 사이트 주소가 Google 로그인 설정에 등록되어 있지 않습니다.',
+        'auth/network-request-failed': 'Google 로그인 서버에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.'
+      }[error.code];
+      status.textContent = message || 'Google 로그인에 실패했습니다. 다시 시도하세요.';
+      console.warn('Funding planner Google sign-in:', error.code || error.name);
+    } finally {
+      control('signin').disabled = false;
     }
   };
   control('signout').onclick = async () => {
