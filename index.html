@@ -1,0 +1,422 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>집을 향한 계획 · 자금 플래너</title><style>
+:root{--bg:#f5f5f0;--ink:#243b35;--muted:#748079;--line:#dde3d9;--green:#316c55}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}button,input,select{font:inherit}button{cursor:pointer;background:white;border:1px solid var(--line);border-radius:9px;padding:9px 14px;color:var(--ink)}button:hover{background:#eaf0e7}input,select{border:1px solid var(--line);border-radius:7px;padding:8px;background:white;min-width:0;color:var(--ink)}header{border-bottom:1px solid var(--line);padding:18px 4%;display:flex;justify-content:space-between;align-items:center;background:#fff}header b{font-size:18px}.brand{display:flex;align-items:center;gap:10px}.logo{background:var(--green);color:white;padding:4px 10px;border-radius:8px}main{max-width:1440px;margin:auto;padding:36px 4%}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--green)}h1{font-size:34px;margin:7px 0}h2{font-size:19px;margin:0}p{color:var(--muted);margin:7px 0 24px}.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:28px 0}.stat{background:white;padding:22px;border:1px solid var(--line);border-radius:14px}.stat.dark{background:var(--ink);color:white}.stat label{font-size:13px;opacity:.75}.stat strong{display:block;font-size:27px;margin-top:10px}.stat small{font-size:12px;opacity:.7}.stat input{width:100%;font-size:27px;font-weight:700;padding:0;border:0;background:transparent;color:inherit;margin:8px 0}.progress{height:6px;background:#dbe5d9;border-radius:5px;overflow:hidden;margin-top:12px}.progress i{display:block;height:100%;background:#b7d7a5}.toolbar{display:flex;align-items:center;justify-content:space-between;margin:28px 0 16px;gap:8px;flex-wrap:wrap}.tabs{display:flex;gap:6px}.active,.primary{background:var(--green);color:white}.board{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}.group{background:#eaece5;border-radius:14px;padding:14px;min-height:160px}.grouphead{display:flex;align-items:center;gap:8px;margin-bottom:14px}.grouphead input{background:transparent;border:0;font-weight:700;width:100%;font-size:16px}.grouphead span{white-space:nowrap;font-size:12px}.card{padding:16px;background:white;border:1px solid var(--line);border-radius:11px;margin:10px 0;box-shadow:0 2px 2px #00000003;cursor:grab}.card.dragging{opacity:.4}.cardtop{display:flex;justify-content:space-between;align-items:center;gap:4px}.cardtop b{font-size:15px}.handle{color:#9ba79d}.amount{font-size:24px;font-weight:650;margin:10px 0 8px}.meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}.pill{background:#eef3e9;padding:3px 7px;border-radius:5px}.edit{border:0;padding:3px 7px;color:var(--muted)}.add{width:100%;background:transparent;border-style:dashed;margin-top:8px}.note{font-size:12px;color:var(--muted);margin-top:20px}.calendar{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden}.calhead{display:flex;justify-content:space-between;align-items:center;padding:20px}.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.dayname{text-align:center;padding:10px;background:#f4f6f1;font-size:12px}.day{min-height:125px;border-top:1px solid var(--line);border-right:1px solid var(--line);padding:8px}.day:hover{background:#fafbf7}.daynum{font-size:13px;color:var(--muted)}.event{display:block;width:100%;text-align:left;border:0;border-radius:4px;font-size:11px;padding:4px;margin-top:4px;background:#edf3e7;overflow:hidden}.event.out{background:#f8ece3;color:#8a5637}.empty{background:#f8f9f6}.payments{margin-top:25px;background:white;border:1px solid var(--line);border-radius:14px;padding:22px}.payrow{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);gap:10px}.payrow small{color:var(--muted)}dialog{border:0;border-radius:16px;padding:28px;width:min(460px,95vw);color:var(--ink);box-shadow:0 15px 70px #172e3033}dialog::backdrop{background:#182d3460}form label{display:block;margin-top:14px;font-size:13px}form input,form select{display:block;width:100%;margin-top:5px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:24px}.danger{color:#a24f43;margin-right:auto}.hidden{display:none!important}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:10px 20px;border-radius:10px;z-index:9}footer{margin-top:25px;font-size:12px;color:var(--muted)}@media(max-width:900px){.summary{grid-template-columns:repeat(2,1fr)}.board{grid-template-columns:1fr}.day{min-height:95px;padding:3px}.event{font-size:10px}.amount{font-size:22px}h1{font-size:28px}}@media(max-width:500px){header{flex-wrap:wrap;gap:12px}.stat{padding:15px}.stat strong,.stat input{font-size:21px}.day{min-height:85px}.calhead{padding:12px}main{padding-top:24px}}
+.board{display:block}.table-shell{overflow-x:auto;background:white;border:1px solid var(--line);border-radius:14px}.funding-table{width:100%;min-width:660px;border-collapse:collapse;text-align:left;table-layout:fixed}.funding-table th,.funding-table td{padding:11px 14px;border-bottom:1px solid var(--line)}.funding-table thead{background:#f4f6f1;font-size:12px}.funding-table .group-row{background:#eaece5}.funding-table .grouphead{margin:0}.funding-table .grouphead input{width:min(220px,48%)}.funding-table .card{cursor:auto;box-shadow:none}.funding-table .handle{cursor:grab;padding:5px;display:inline-block;font-size:16px}.funding-table .money-cell{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.funding-table .date-cell{font-size:12px;color:var(--muted);white-space:nowrap}.funding-table .row-note{display:block;font-size:11px;color:var(--muted);margin-left:24px}.funding-table .add{margin:0;text-align:left}.funding-table .drop-row td{box-shadow:inset 0 2px var(--green)}.bar-track{position:relative;height:24px;display:flex;align-items:center;background:#edf0e9;border-radius:5px;overflow:hidden}.bar-fill{position:absolute;height:100%;width:var(--fill);background:#82aa91;pointer-events:none}.funding-table tbody:nth-of-type(2) .bar-fill{background:#79a7b2}.funding-table tbody:nth-of-type(3) .bar-fill{background:#c5aa73}.bar-control{appearance:none;position:relative;width:100%;margin:0;padding:0 2px;background:transparent;border:0;cursor:ew-resize;height:24px}.bar-control::-webkit-slider-thumb{appearance:none;width:8px;height:20px;background:#244a3b;border-radius:3px}.bar-control::-moz-range-thumb{width:8px;height:20px;background:#244a3b;border:0;border-radius:3px}.bar-control:focus-visible{outline:2px solid #244a3b;outline-offset:-2px}.active:hover,.primary:hover{background:#25533f}.table-scale{display:block;color:var(--muted);font-weight:400}.funding-table .card td:last-child{text-align:right}
+.cost-board{margin-top:26px;background:white;border:1px solid var(--line);border-radius:14px;padding:22px}
+.cost-head,.cost-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.cost-board p{font-size:13px;margin:8px 0 14px}
+.cost-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.cost-table th,.cost-table td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+.cost-table th{font-size:12px;color:var(--muted)}
+.cost-table input{width:100%}
+.cost-table td:last-child,.cost-table th:last-child{width:60px;text-align:right}
+.cost-actions{margin-top:16px}
+.cost-actions output{font-size:22px;font-weight:700;margin-left:8px}
+@media(max-width:500px){.cost-board{padding:14px}.cost-table th,.cost-table td{padding:6px 3px}}
+.funding-table .inline-amount{width:100%;max-width:150px;text-align:right;font-weight:650;font-variant-numeric:tabular-nums;background:#fbfcfa}.funding-table .inline-amount:focus{outline:2px solid var(--green);outline-offset:1px}.broker-rate{display:inline-flex;align-items:center;gap:6px}.cost-table .broker-rate input{width:5em;text-align:right}.broker-amount{display:block;margin-top:4px;font-weight:650}.tax-inputs{display:flex;flex-wrap:wrap;gap:8px}.tax-inputs label{flex:1 1 90px;font-size:12px}.tax-inputs input{display:block;margin-top:3px}.tax-detail{display:block;margin:4px 0;color:var(--muted)}.tax-detail:empty{display:none}.stat small a{color:inherit;text-underline-offset:3px}.stat input[readonly]{cursor:default}.stat.goal-shortfall{color:#9b2727;background:#fff0ef;border-color:#efc3bf}.stat.goal-achieved{color:#246044;background:#eaf5eb;border-color:#bfdcc5}.funding-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.amount-field{display:flex;align-items:center;justify-content:flex-end;gap:6px}.amount-field span{flex:none;font-size:12px;color:var(--muted)}</style><header><div class="brand"><span class="logo">⌂</span><b>자금 플래너</b></div><div><button id="export">백업 저장 ↓</button> <button id="import">불러오기</button><input type="file" id="file" accept="application/json" hidden></div></header><main><div class="eyebrow">OUR NEXT HOME</div><h1>집을 향한, 차근차근 계획</h1><p>자금을 모으고, 일정을 연결하고, 남은 금액을 확인하세요.</p><div class="summary" id="summary"></div><div class="toolbar"><div class="tabs"><button id="boardtab" class="active">자금 보드</button><button id="caltab">달력 일정</button></div><div><button id="addgroup">+ 그룹</button> <button class="primary" id="additem">+ 자금 추가</button></div></div><div id="board" class="board"></div><div id="calendar" class="calendar hidden"></div><div class="note">금액 (만원) 칸에 숫자를 직접 입력하거나 막대 끝을 움직여 100만 원 단위로 조정하세요. ⋮⋮를 끌어 행의 순서나 그룹을 바꾸세요. ‘수정’에서 정확한 금액과 날짜를 입력할 수 있습니다.</div><section id="cost-board" class="cost-board" aria-labelledby="cost-heading">
+<div class="cost-head"><h2 id="cost-heading">필요금액 산정</h2><button id="addcost">+ 비용 추가</button></div>
+<p>금액은 만 원 단위로 입력하세요.</p>
+<table class="cost-table"><thead><tr><th scope="col">비용 항목</th><th scope="col">예상 금액 (만원)</th><th scope="col">편집</th></tr></thead><tbody id="costrows"></tbody></table>
+<div class="cost-actions"><div>필요금액 합계 <output id="costtotal"></output></div><small>합계가 상단 총 필요자금에 자동 반영됩니다.</small></div>
+</section><section class="payments"><div class="toolbar" style="margin:0"><h2>지급 일정과 시점별 자금</h2><button id="addpay">+ 지급 추가</button></div><p style="font-size:12px;margin-bottom:8px">날짜가 지정된 자금만 해당일까지의 조달액에 반영합니다. 확보 상태와 무관한 예정 기준입니다.</p><div id="payments"></div></section><footer id="storage">변경 사항은 이 브라우저에 자동 저장됩니다. 다른 기기에서 이어가려면 백업 파일을 저장해 불러오세요.</footer></main>
+<dialog id="modal"><form id="form"><h2 id="modaltitle">자금 수정</h2><label>항목명<input name="name" required maxlength="80"></label><label>금액<input name="amount" type="text" placeholder="예: 1억 6000만원" required></label><small>숫자만 입력하면 만 원 단위로 계산합니다.</small><label>예정일 · 미정이면 비워두세요<input name="date" type="date"></label><label id="grouplabel">그룹<select name="group"></select></label><label id="statuslabel">상태<select name="status"><option value="예정">예정</option><option value="확보">확보</option><option value="검토">검토</option></select></label><label>메모<input name="note" maxlength="200"></label><div id="orderbuttons" style="margin-top:15px"><button type="button" id="up">↑ 앞으로 이동</button> <button type="button" id="down">↓ 뒤로 이동</button></div><div class="actions"><button type="button" id="delete" class="danger">삭제</button><button type="button" id="cancel">취소</button><button class="primary">저장</button></div></form></dialog><dialog id="backup-dialog" aria-labelledby="backup-title">
+  <h2 id="backup-title">자금조달계획 백업</h2>
+  <p>다운로드가 안 되면 아래 내용을 복사하세요.</p>
+  <textarea id="backup-text" aria-label="백업 내용" rows="8" readonly style="width:100%;resize:vertical"></textarea>
+  <div class="actions">
+    <button id="backup-copy">내용 복사</button>
+    <a id="backup-download" download="자금조달계획.json">JSON 다운로드</a>
+    <button id="backup-close">닫기</button>
+  </div>
+</dialog><div id="toast" class="toast hidden"></div><script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),uid=()=>crypto.randomUUID?.() || Array.from(crypto.getRandomValues(new Uint32Array(4)), n=>n.toString(16).padStart(8,'0')).join('');
+const initial={"target":0,"groups":[{"id":"default","name":"자금 조달"}],"items":[],"payments":[],"costs":[]};
+let data;try{data=JSON.parse(localStorage.getItem('funding-planner-pages-v1'))||structuredClone(initial)}catch{data=structuredClone(initial)}let view='board',month=new Date(),editing=null,kind='item',dragged=null;
+const sum = rows => Math.round(rows.reduce((total, row) => total + Number(row.amount), 0) * 10000) / 10000;
+const fmt = n => new Intl.NumberFormat('ko-KR', {maximumFractionDigits: 2}).format(n);
+function money(amount) {
+  const won = Math.round(Math.abs(amount) * 10000);
+  const eok = Math.floor(won / 100000000);
+  const man = Math.floor(won / 10000) % 10000;
+  const remainder = won % 10000;
+  const parts = [];
+  if (eok) parts.push(fmt(eok) + '억');
+  if (man) parts.push(fmt(man) + '만');
+  if (remainder) parts.push(fmt(remainder));
+  return (amount < 0 && won ? '-' : '') + (parts.join(' ') || '0') + ' 원';
+}
+
+function parseMoney(input) {
+  const text = input.normalize('NFKC').replace(/\s/g, '');
+  const number = '(?:[0-9]+|[0-9]{1,3}(?:,[0-9]{3})+)(?:\\.[0-9]+)?';
+  const toNumber = value => Number((value || '0').replace(/,/g, ''));
+  const bare = text.match(new RegExp('^(' + number + ')(원)?$'));
+  const units = text.match(new RegExp('^(?:(' + number + ')억)?(?:(' + number + ')만)?(?:(' + number + '))?(원)?$'));
+  let won;
+  if (bare) {
+    won = toNumber(bare[1]) * (bare[2] ? 1 : 10000);
+  } else if (units && (units[1] || units[2]) && (!units[3] || units[4] || !units[2])) {
+    const trailingUnit = units[4] ? 1 : 10000;
+    won = toNumber(units[1]) * 100000000 + toNumber(units[2]) * 10000 + toNumber(units[3]) * trailingUnit;
+  } else {
+    return null;
+  }
+  const rounded = Math.round(won);
+  return Number.isSafeInteger(rounded) && Math.abs(won - rounded) < 0.00001 ? rounded / 10000 : null;
+}
+
+function reportInvalidAmount(input) {
+  input.setCustomValidity('1억 6000만원, 1.6억, 16000처럼 금액을 입력하세요.');
+  input.reportValidity();
+}
+function persist() {
+  try {
+    localStorage.setItem('funding-planner-pages-v1', JSON.stringify(data));
+  } catch {
+    $('#storage').textContent = '자동 저장에 실패했습니다. 백업 저장으로 변경 내용을 보관하세요.';
+  }
+}
+
+function save() {
+  persist();
+  render();
+}
+
+let assessedTotal = 0;
+
+function renderCostBoard() {
+  if (!Array.isArray(data.costs) || !data.costs.every(cost =>
+    cost && typeof cost.name === 'string' && Number.isFinite(cost.amount) && cost.amount >= 0
+  )) {
+    data.costs = ['매매가', '취득세 및 관련 세금', '중개보수', '등기·법무사 비용', '이사비'].map(name => ({name, amount: 0}));
+  }
+
+  for (const cost of data.costs) {
+    if (cost.name === '매매가') cost.kind ??= 'purchase';
+    if (cost.name === '중개보수') cost.kind ??= 'broker';
+    if (cost.name === '취득세 및 관련 세금') cost.kind ??= 'tax';
+  }
+  const purchase = data.costs.find(cost => cost.kind === 'purchase');
+
+  function taxBreakdown(cost) {
+    if (!(purchase?.amount > 0 && Number.isFinite(cost.area) && cost.area > 0)) return null;
+    const price = purchase.amount;
+    const rate = price <= 60000 ? 1 : price > 90000 ? 3 :
+      Math.round((price / 15000 - 3) * 10000) / 10000;
+    const taxAt = rate => Math.round(purchase.amount * rate * 100) / 10000;
+    return [
+      ['취득세', rate, taxAt(rate)],
+      ['지방교육세', rate / 10, taxAt(rate / 10)]
+    ];
+  }
+
+  const costTotal = () => sum(data.costs.map(cost => {
+    const taxes = cost.kind === 'tax' ? taxBreakdown(cost) : null;
+    return taxes ? {amount: sum(taxes.map(([, , amount]) => ({amount})))} : cost;
+  }));
+
+  $('#costrows').innerHTML = data.costs.map((cost, index) => `
+    <tr>
+      <td><input maxlength="80" aria-label="비용 항목 ${index + 1}" value="${esc(cost.name)}">${cost.name === '등기·법무사 비용' ? '<small class="tax-detail">소유권 이전등기 수수료, 채권 할인 비용, 법무사 대행료 등. 견적서에서 취득세 등 세금은 빼고 입력하세요.</small>' : ''}</td>
+      <td>${cost.kind === 'tax' ? `
+        <div class="tax-inputs">
+          <label>전용면적 (㎡)<input data-tax-field="area" type="text" inputmode="decimal" placeholder="예: 84.9" value="${Number.isFinite(cost.area) ? cost.area : ''}"></label>
+        </div>
+        <output class="broker-amount tax-amount"></output>
+        <small class="tax-detail"></small>
+        <small>주택 일반세율 기준 · 감면·중과 및 농어촌특별세 별도</small>` : cost.kind === 'broker' ? `
+        <label class="broker-rate">요율 <input aria-label="중개보수율 (%)" type="text" inputmode="decimal" value="${Number.isFinite(cost.rate) ? cost.rate : ''}"> %</label>
+        <output class="broker-amount"></output>` : `
+        <input aria-label="예상 금액 ${index + 1} (만원)" type="text" inputmode="decimal" placeholder="예: 16000" value="${cost.amount || ''}">`}</td>
+      <td><button class="edit" aria-label="비용 항목 ${index + 1} 삭제">삭제</button></td>
+    </tr>`).join('');
+
+  const rows = Array.from($('#costrows').rows);
+  const updateTotal = () => {
+    rows.forEach((row, index) => {
+      const cost = data.costs[index];
+      if (cost.kind === 'tax') {
+        const taxes = taxBreakdown(cost);
+        row.querySelector('.tax-amount').textContent = taxes ?
+          money(sum(taxes.map(([, , amount]) => ({amount})))) :
+          cost.amount ? '기존 입력액 ' + money(cost.amount) : '매매가와 전용면적을 입력하세요';
+        row.querySelector('.tax-detail').textContent = taxes ? taxes.map(([name, rate, amount]) =>
+          name + ' ' + Number(rate.toFixed(6)) + '% · ' + money(amount)).join(' / ') : '';
+        return;
+      }
+      if (cost.kind !== 'broker') return;
+      const hasRate = Number.isFinite(cost.rate) && cost.rate >= 0 && cost.rate <= 100;
+      if (hasRate) cost.amount = Math.round((purchase?.amount || 0) * cost.rate * 100) / 10000;
+      const output = row.querySelector('.broker-amount');
+      output.textContent = hasRate && !purchase?.amount ? '매매가를 입력하세요' :
+        !hasRate && cost.amount ? '기존 입력액 ' + money(cost.amount) : money(cost.amount);
+    });
+    assessedTotal = costTotal();
+    $('#costtotal').textContent = money(assessedTotal);
+    renderSummary();
+  };
+  rows.forEach((row, index) => {
+    const [nameInput, amountInput] = row.querySelectorAll('input');
+    const cost = data.costs[index];
+    nameInput.onchange = () => {
+      cost.name = nameInput.value.trim() || '비용';
+      nameInput.value = cost.name;
+      persist();
+    };
+    row.querySelector('button').onclick = () => {
+      data.costs.splice(index, 1);
+      persist();
+      renderCostBoard();
+    };
+    if (cost.kind === 'tax') {
+      row.querySelectorAll('[data-tax-field]').forEach(input => {
+        input.oninput = () => input.setCustomValidity('');
+        input.onchange = () => {
+          const value = input.value.trim();
+          const number = Number(value);
+          const valid = /^[0-9]+(?:\.[0-9]{1,4})?$/.test(value) && Number.isFinite(number) &&
+            number > 0;
+          if (value && !valid) {
+            input.setCustomValidity('0보다 큰 전용면적을 입력하세요.');
+            return input.reportValidity();
+          }
+          cost.area = value ? number : null;
+          updateTotal();
+          persist();
+        };
+        input.onkeydown = event => {
+          if (event.key === 'Enter') input.blur();
+        };
+      });
+      return;
+    }
+    amountInput.oninput = () => amountInput.setCustomValidity('');
+    amountInput.onchange = () => {
+      const value = amountInput.value.trim();
+      const amount = Number(value);
+      if (cost.kind === 'broker') {
+        if ((value && !/^[0-9]+(?:\.[0-9]{1,4})?$/.test(value)) || amount > 100) {
+          amountInput.setCustomValidity('0~100 사이의 요율을 숫자로 입력하세요.');
+          return amountInput.reportValidity();
+        }
+        cost.rate = amount;
+        amountInput.value = String(amount);
+        updateTotal();
+        persist();
+        return;
+      }
+      if ((value && !/^[0-9]+(?:\.[0-9]{1,4})?$/.test(value)) || !Number.isSafeInteger(Math.round(amount * 10000))) {
+        amountInput.setCustomValidity('만원 단위 숫자만 입력하세요. 예: 16000');
+        return amountInput.reportValidity();
+      }
+      cost.amount = amount;
+      amountInput.value = value ? String(amount) : '';
+      updateTotal();
+      persist();
+    };
+    amountInput.onkeydown = event => {
+      if (event.key === 'Enter') amountInput.blur();
+    };
+
+  });
+
+  $('#addcost').onclick = () => {
+    data.costs.push({name: '', amount: 0});
+    persist();
+    renderCostBoard();
+    $('#costrows').lastElementChild.querySelector('input').focus();
+  };
+  updateTotal();
+}
+
+function renderSummary(){const target = assessedTotal > 0 ? assessedTotal : data.target; const gap = target - sum(data.items);$('#summary').innerHTML=`<div class="stat"><label for="target">총 필요자금</label><input id="target" type="text" value="${money(target)}" placeholder="예: 13억 원" ${assessedTotal > 0 ? 'readonly' : ''}><small><a href="#cost-board">필요금액 산정 보드로 이동</a></small></div><div class="stat ${target <= 0 ? '' : gap > 0 ? 'goal-shortfall' : 'goal-achieved'}"><label>${target <= 0 ? '자금 목표 미설정' : gap > 0 ? '목표 미달' : '목표 달성'}</label><strong>${target <= 0 ? '' : (gap > 0 ? '-' : '+') + money(Math.abs(gap))}</strong></div>`;const targetInput = $('#target');
+targetInput.oninput = () => targetInput.setCustomValidity('');
+targetInput.onchange = () => {
+  const amount = parseMoney(targetInput.value);
+  if (amount === null) return reportInvalidAmount(targetInput);
+  data.target = amount;
+  save();
+};
+targetInput.onkeydown = event => {
+  if (event.key === 'Enter') targetInput.blur();
+};
+}
+
+function render({preserveEditors = false} = {}) {
+  if (preserveEditors) {
+    renderSummary();
+  } else {
+    renderBoard();
+    renderCostBoard();
+  }
+$('#payments').innerHTML=data.payments.length?data.payments.slice().sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999')).map(p=>{let available=p.date?sum(data.items.filter(i=>i.date&&i.date<=p.date)):0,spent=p.date?sum(data.payments.filter(i=>i.date&&i.date<=p.date)):0;return `<div class="payrow"><div><b>${esc(p.name)}</b><br><small>${p.date||'날짜 미정'}${p.note?' · '+esc(p.note):''}</small></div><div style="text-align:right"><b>${money(p.amount)}</b><br><small>${p.date?(available-spent>=0?'누적 잔여 ':'누적 부족 ')+money(Math.abs(available-spent)):'날짜를 지정하면 부족액 계산'}</small></div><button data-pay="${p.id}">수정</button></div>`}).join(''):'지급 일정을 추가하세요.';document.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>open('pay',b.dataset.pay));renderCalendar()}
+function renderBoard() {
+  const getScale = () => Math.ceil(Math.max(100000, ...data.items.map(item => item.amount * 1.1)) / 1000) * 1000;
+  let scale = getScale();
+
+  const groupRows = data.groups.map(group => {
+    const items = data.items.filter(item => item.group === group.id);
+    const rows = items.map(item => `
+      <tr class="card" data-id="${item.id}">
+        <td><span class="handle" draggable="true" title="끌어서 이동">⋮⋮</span> <b>${esc(item.name)}</b>
+          ${item.note ? `<span class="row-note">${esc(item.note)}</span>` : ''}
+        </td>
+        <td><div class="bar-track"><div class="bar-fill" style="--fill:${item.amount / scale * 100}%"></div>
+          <input class="bar-control" type="range" min="0" max="${scale}" step="100" value="${item.amount}" aria-label="${esc(item.name)} 금액 (만원)">
+        </div></td>
+        <td class="money-cell"><div class="amount-field"><input class="inline-amount" type="text" inputmode="decimal" aria-label="${esc(item.name)} 직접 입력 (만원)" value="${item.amount}"><span aria-hidden="true">만원</span></div></td>
+        <td class="date-cell">${esc(item.date || '미정')} · ${esc(item.status)}</td>
+        <td><button class="edit" data-edit="${item.id}">수정</button></td>
+      </tr>`).join('');
+    return `<tbody data-group="${group.id}">
+      <tr class="group-row"><td colspan="5"><div class="grouphead">
+        <input aria-label="그룹명" value="${esc(group.name)}" data-groupname="${group.id}">
+        <span class="group-total">${money(sum(items))}</span><button class="edit" data-delgroup="${group.id}" aria-label="그룹 삭제">×</button>
+      </div></td></tr>${rows}
+      <tr><td colspan="5"><button class="add" data-add="${group.id}">+ 항목 추가</button></td></tr>
+    </tbody>`;
+  }).join('');
+
+  $('#board').innerHTML = `<div class="table-shell"><table class="funding-table">
+    <colgroup><col style="width:27%"><col style="width:33%"><col style="width:17%"><col style="width:16%"><col style="width:7%"></colgroup>
+    <thead><tr><th>항목</th><th>금액 막대 <span class="table-scale">0 ~ ${money(scale)}</span></th><th class="money-cell">금액 (만원)</th><th>예정일 · 상태</th><th>편집</th></tr></thead>
+    ${groupRows}</table></div>`;
+
+  document.querySelectorAll('[data-edit]').forEach(button => {
+    button.onclick = () => open('item', button.dataset.edit);
+  });
+  document.querySelectorAll('[data-add]').forEach(button => {
+    button.onclick = () => open('item', null, button.dataset.add);
+  });
+  document.querySelectorAll('[data-groupname]').forEach(input => {
+    input.onchange = () => {
+      data.groups.find(group => group.id === input.dataset.groupname).name = input.value.trim() || '새 그룹';
+      save();
+    };
+  });
+  document.querySelectorAll('[data-delgroup]').forEach(button => {
+    button.onclick = () => {
+      const groupId = button.dataset.delgroup;
+      if (data.items.some(item => item.group === groupId)) {
+        toast('항목을 다른 그룹으로 옮긴 뒤 삭제하세요.');
+        return;
+      }
+      data.groups = data.groups.filter(group => group.id !== groupId);
+      save();
+    };
+  });
+
+  const boardRows = Array.from($('#board').querySelectorAll('.card'));
+  boardRows.forEach(row => {
+    const handle = row.querySelector('.handle');
+    const slider = row.querySelector('.bar-control');
+    const item = data.items.find(entry => entry.id === row.dataset.id);
+    const amountInput = row.querySelector('.inline-amount');
+    amountInput.oninput = () => amountInput.setCustomValidity('');
+    amountInput.onkeydown = event => {
+      if (event.key === 'Enter') amountInput.blur();
+      if (event.key === 'Escape') {
+        amountInput.setCustomValidity('');
+        amountInput.value = String(item.amount);
+        amountInput.blur();
+      }
+    };
+    amountInput.onchange = () => {
+      const value = amountInput.value.trim();
+      const amount = Number(value);
+      if (!/^[0-9]+(?:\.[0-9]{1,4})?$/.test(value) || !Number.isSafeInteger(Math.round(amount * 10000))) {
+        amountInput.setCustomValidity('만원 단위 숫자를 입력하세요. 예: 1500');
+        return amountInput.reportValidity();
+      }
+      item.amount = amount;
+      amountInput.value = String(amount);
+      scale = getScale();
+      $('#board .table-scale').textContent = '0 ~ ' + money(scale);
+      const amounts = new Map(data.items.map(entry => [entry.id, entry.amount]));
+      boardRows.forEach(boardRow => {
+        const rowAmount = amounts.get(boardRow.dataset.id);
+        const rowSlider = boardRow.querySelector('.bar-control');
+        rowSlider.max = String(scale);
+        rowSlider.value = String(rowAmount);
+        boardRow.querySelector('.bar-fill').style.setProperty('--fill', (rowAmount / scale * 100) + '%');
+      });
+      row.closest('tbody').querySelector('.group-total').textContent = money(sum(data.items.filter(entry => entry.group === item.group)));
+      persist();
+      render({preserveEditors: true});
+    };
+    slider.oninput = () => {
+      const amount = slider.valueAsNumber;
+      row.querySelector('.bar-fill').style.setProperty('--fill', (amount / scale * 100) + '%');
+      amountInput.setCustomValidity('');
+      amountInput.value = String(amount);
+    };
+    slider.onchange = () => {
+      item.amount = slider.valueAsNumber;
+      const hadFocus = document.activeElement === slider;
+      save();
+      if (hadFocus) {
+        document.querySelector(`[data-id="${CSS.escape(item.id)}"] .bar-control`)?.focus({preventScroll:true});
+      }
+    };
+    handle.ondragstart = event => {
+      dragged = item.id;
+      event.dataTransfer.setData('text/plain', item.id);
+      event.dataTransfer.effectAllowed = 'move';
+      row.classList.add('dragging');
+    };
+    handle.ondragend = () => {
+      dragged = null;
+      row.classList.remove('dragging');
+      document.querySelectorAll('.drop-row').forEach(target => target.classList.remove('drop-row'));
+    };
+  });
+  document.querySelectorAll('.funding-table tbody').forEach(group => {
+    group.ondragover = event => {
+      if (!dragged) return;
+      event.preventDefault();
+      const target = event.target.closest('tr');
+      document.querySelectorAll('.drop-row').forEach(row => row.classList.toggle('drop-row', row === target));
+      target?.classList.add('drop-row');
+    };
+    group.ondrop = event => {
+      event.preventDefault();
+      const index = data.items.findIndex(item => item.id === dragged);
+      const targetId = event.target.closest('.card')?.dataset.id;
+      if (index < 0 || targetId === dragged) return;
+      const [item] = data.items.splice(index, 1);
+      item.group = group.dataset.group;
+      const targetIndex = data.items.findIndex(entry => entry.id === targetId);
+      data.items.splice(targetIndex < 0 ? data.items.length : targetIndex, 0, item);
+      dragged = null;
+      save();
+    };
+  });
+}
+function renderCalendar(){let y=month.getFullYear(),m=month.getMonth(),first=new Date(y,m,1).getDay(),last=new Date(y,m+1,0).getDate();let cells='';for(let n=0;n<Math.ceil((first+last)/7)*7;n++){let d=n-first+1;if(d<1||d>last){cells+='<div class="day empty"></div>';continue}let date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;cells+=`<div class="day" data-date="${date}"><span class="daynum">${d}</span>${data.items.filter(i=>i.date===date).map(i=>`<button class="event" data-calitem="${i.id}">＋ ${esc(i.name)}<br>${money(i.amount)}</button>`).join('')}${data.payments.filter(i=>i.date===date).map(i=>`<button class="event out" data-calpay="${i.id}">－ ${esc(i.name)}<br>${money(i.amount)}</button>`).join('')}</div>`}$('#calendar').innerHTML=`<div class="calhead"><button id="prev">‹ 이전</button><h2>${y}년 ${m+1}월</h2><button id="next">다음 ›</button></div><div class="grid">${['일','월','화','수','목','금','토'].map(x=>`<div class="dayname">${x}</div>`).join('')}${cells}</div><div class="note" style="padding:0 16px 16px">날짜를 누르면 자금을 추가합니다. 초록색은 조달, 주황색은 지급입니다. 날짜 미정: ${data.items.filter(i=>!i.date).length}개 자금 · ${data.payments.filter(i=>!i.date).length}개 지급</div>`;$('#prev').onclick=()=>{month=new Date(y,m-1,1);renderCalendar()};$('#next').onclick=()=>{month=new Date(y,m+1,1);renderCalendar()};document.querySelectorAll('[data-date]').forEach(e=>e.onclick=()=>open('item',null,null,e.dataset.date));document.querySelectorAll('[data-calitem]').forEach(e=>e.onclick=ev=>{ev.stopPropagation();open('item',e.dataset.calitem)});document.querySelectorAll('[data-calpay]').forEach(e=>e.onclick=ev=>{ev.stopPropagation();open('pay',e.dataset.calpay)})}
+function open(type,id,group,date){kind=type;editing=id;let list=type==='item'?data.items:data.payments,i=list.find(x=>x.id===id)||{name:'',amount:'',date:date||'',group:group||data.groups[0]?.id,status:'예정',note:''},f=$('#form');$('#modaltitle').textContent=(type==='item'?'자금':'지급')+(id?' 수정':' 추가');f.elements.name.value=i.name;f.elements.amount.setCustomValidity('');f.elements.amount.value=i.amount===''?'':money(i.amount);f.elements.date.value=i.date;f.elements.note.value=i.note||'';f.elements.group.innerHTML=data.groups.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join('');f.elements.group.value=i.group;f.elements.status.value=i.status||'예정';$('#grouplabel').hidden=type!=='item';$('#statuslabel').hidden=type!=='item';$('#orderbuttons').hidden=type!=='item'||!id;$('#delete').hidden=!id;$('#modal').showModal()}
+$('#form').elements.amount.oninput=e=>e.target.setCustomValidity('');
+$('#form').onsubmit=e=>{e.preventDefault();let f=e.target,list=kind==='item'?data.items:data.payments;if(kind==='item'&&!data.groups.length)return toast('먼저 그룹을 추가하세요.');const amount=parseMoney(f.elements.amount.value);if(amount===null)return reportInvalidAmount(f.elements.amount);let i={id:editing||uid(),name:f.elements.name.value.trim(),amount,date:f.elements.date.value,note:f.elements.note.value.trim()};if(!i.name||!Number.isFinite(i.amount)||i.amount<0)return;if(kind==='item'){i.group=f.elements.group.value;i.status=f.elements.status.value}let idx=list.findIndex(x=>x.id===editing);if(idx>=0)list[idx]=i;else list.push(i);$('#modal').close();save();toast('저장했습니다.')};$('#cancel').onclick=()=>$('#modal').close();$('#delete').onclick=()=>{if(!confirm('이 항목을 삭제할까요?'))return;if(kind==='item')data.items=data.items.filter(i=>i.id!==editing);else data.payments=data.payments.filter(i=>i.id!==editing);$('#modal').close();save()};function move(delta){let i=data.items.findIndex(x=>x.id===editing),item=data.items[i],peers=data.items.map((x,n)=>({x,n})).filter(p=>p.x.group===item.group),p=peers.findIndex(p=>p.n===i),dest=peers[p+delta];if(dest){[data.items[i],data.items[dest.n]]=[data.items[dest.n],data.items[i]];save();toast('순서를 변경했습니다.')}}$('#up').onclick=()=>move(-1);$('#down').onclick=()=>move(1);
+$('#additem').onclick=()=>open('item');$('#addpay').onclick=()=>open('pay');$('#addgroup').onclick=()=>{let name=prompt('새 그룹 이름');if(name?.trim()){data.groups.push({id:uid(),name:name.trim()});save()}};function setView(v){view=v;$('#board').classList.toggle('hidden',v!=='board');$('#calendar').classList.toggle('hidden',v!=='calendar');$('#boardtab').classList.toggle('active',v==='board');$('#caltab').classList.toggle('active',v==='calendar')}$('#boardtab').onclick=()=>setView('board');$('#caltab').onclick=()=>setView('calendar');let timer;function toast(s){$('#toast').textContent=s;$('#toast').classList.remove('hidden');clearTimeout(timer);timer=setTimeout(()=>$('#toast').classList.add('hidden'),2500)}
+let backupUrl;
+$('#export').onclick = () => {
+  const backup = JSON.stringify(data, null, 2);
+  $('#backup-text').value = backup;
+  if (backupUrl) URL.revokeObjectURL(backupUrl);
+  backupUrl = URL.createObjectURL(new Blob([backup], {type:'application/json'}));
+  $('#backup-download').href = backupUrl;
+  $('#backup-dialog').showModal();
+};
+$('#backup-copy').onclick = async () => {
+  const field = $('#backup-text');
+  field.focus();
+  field.select();
+  try {
+    await navigator.clipboard.writeText(field.value);
+    $('#backup-copy').textContent = '복사 완료';
+  } catch {
+    $('#backup-copy').textContent = 'Ctrl+C로 복사';
+  }
+};
+$('#backup-dialog').onclose = () => { $('#backup-copy').textContent = '내용 복사'; };
+$('#backup-close').onclick = () => $('#backup-dialog').close();
+$('#import').onclick=()=>$('#file').click();$('#file').onchange=async e=>{let file=e.target.files[0];if(!file)return;try{let d=JSON.parse(await file.text()),validRow=i=>i&&typeof i.id==='string'&&typeof i.name==='string'&&typeof i.amount==='number'&&Number.isFinite(i.amount)&&i.amount>=0&&typeof i.date==='string'&&(!i.date||/^\d{4}-\d{2}-\d{2}$/.test(i.date));if(!d||typeof d.target!=='number'||!Number.isFinite(d.target)||d.target<0||!Array.isArray(d.groups)||!Array.isArray(d.items)||!Array.isArray(d.payments)||!d.groups.every(g=>typeof g.id==='string'&&typeof g.name==='string')||!d.items.every(i=>validRow(i)&&d.groups.some(g=>g.id===i.group)&&['예정','확보','검토'].includes(i.status))||!d.payments.every(validRow)||new Set([...d.groups,...d.items,...d.payments].map(i=>i.id)).size!==d.groups.length+d.items.length+d.payments.length)throw Error();if(confirm('현재 계획을 백업 파일 내용으로 바꿀까요?')){data=d;save();toast('불러왔습니다.')}}catch{toast('올바른 자금 플래너 백업 파일이 아닙니다.')}e.target.value=''};render();
+</script></html>
