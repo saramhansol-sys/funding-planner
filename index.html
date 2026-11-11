@@ -12,7 +12,34 @@
 .cost-actions{margin-top:16px}
 .cost-actions output{font-size:22px;font-weight:700;margin-left:8px}
 @media(max-width:500px){.cost-board{padding:14px}.cost-table th,.cost-table td{padding:6px 3px}}
-.funding-table .inline-amount{width:100%;max-width:150px;text-align:right;font-weight:650;font-variant-numeric:tabular-nums;background:#fbfcfa}.funding-table .inline-amount:focus{outline:2px solid var(--green);outline-offset:1px}.broker-rate{display:inline-flex;align-items:center;gap:6px}.cost-table .broker-rate input{width:5em;text-align:right}.broker-amount{display:block;margin-top:4px;font-weight:650}.tax-inputs{display:flex;flex-wrap:wrap;gap:8px}.tax-inputs label{flex:1 1 90px;font-size:12px}.tax-inputs input{display:block;margin-top:3px}.tax-detail{display:block;margin:4px 0;color:var(--muted)}.tax-detail:empty{display:none}.stat small a{color:inherit;text-underline-offset:3px}.stat input[readonly]{cursor:default}.stat.goal-shortfall{color:#9b2727;background:#fff0ef;border-color:#efc3bf}.stat.goal-achieved{color:#246044;background:#eaf5eb;border-color:#bfdcc5}.funding-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.amount-field{display:flex;align-items:center;justify-content:flex-end;gap:6px}.amount-field span{flex:none;font-size:12px;color:var(--muted)}</style><header><div class="brand"><span class="logo">⌂</span><b>자금 플래너</b></div><div><button id="export">백업 저장 ↓</button> <button id="import">불러오기</button><input type="file" id="file" accept="application/json" hidden></div></header><main><div class="eyebrow">OUR NEXT HOME</div><h1>집을 향한, 차근차근 계획</h1><p>자금을 모으고, 일정을 연결하고, 남은 금액을 확인하세요.</p><div class="summary" id="summary"></div><div class="toolbar"><div class="tabs"><button id="boardtab" class="active">자금 보드</button><button id="caltab">달력 일정</button></div><div><button id="addgroup">+ 그룹</button> <button class="primary" id="additem">+ 자금 추가</button></div></div><div id="board" class="board"></div><div id="calendar" class="calendar hidden"></div><div class="note">금액 (만원) 칸에 숫자를 직접 입력하거나 막대 끝을 움직여 100만 원 단위로 조정하세요. ⋮⋮를 끌어 행의 순서나 그룹을 바꾸세요. ‘수정’에서 정확한 금액과 날짜를 입력할 수 있습니다.</div><section id="cost-board" class="cost-board" aria-labelledby="cost-heading">
+.funding-table .inline-amount{width:100%;max-width:150px;text-align:right;font-weight:650;font-variant-numeric:tabular-nums;background:#fbfcfa}.funding-table .inline-amount:focus{outline:2px solid var(--green);outline-offset:1px}.broker-rate{display:inline-flex;align-items:center;gap:6px}.cost-table .broker-rate input{width:5em;text-align:right}.broker-amount{display:block;margin-top:4px;font-weight:650}.tax-inputs{display:flex;flex-wrap:wrap;gap:8px}.tax-inputs label{flex:1 1 90px;font-size:12px}.tax-inputs input{display:block;margin-top:3px}.tax-detail{display:block;margin:4px 0;color:var(--muted)}.tax-detail:empty{display:none}.stat small a{color:inherit;text-underline-offset:3px}.stat input[readonly]{cursor:default}.stat.goal-shortfall{color:#9b2727;background:#fff0ef;border-color:#efc3bf}.stat.goal-achieved{color:#246044;background:#eaf5eb;border-color:#bfdcc5}.funding-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.amount-field{display:flex;align-items:center;justify-content:flex-end;gap:6px}.amount-field span{flex:none;font-size:12px;color:var(--muted)}</style><header><div class="brand"><span class="logo">⌂</span><b>자금 플래너</b></div><div><button id="export">백업 저장 ↓</button> <button id="import">불러오기</button><input type="file" id="file" accept="application/json" hidden></div></header><style>
+#sharing-panel{max-width:1120px;margin:18px auto;padding:0 20px}
+#sharing-panel summary{cursor:pointer;font-weight:700}
+#sharing-panel form,#sharing-panel .sharing-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0}
+#sharing-panel [hidden]{display:none}
+#sharing-panel input{width:min(280px,100%)}
+#sharing-editors{padding-left:22px}
+#sharing-editors li{margin:6px 0;overflow-wrap:anywhere}
+</style><details id="sharing-panel" hidden>
+  <summary>공유 계획</summary>
+  <p id="sharing-status" role="status"></p>
+  <div class="sharing-actions">
+    <button id="sharing-signin" hidden>Google로 로그인</button>
+    <button id="sharing-signout" hidden>로그아웃</button>
+    <button id="sharing-create" hidden>현재 내역으로 공유 시작</button>
+    <button id="sharing-link" hidden>공유 링크 복사</button>
+    <button id="sharing-leave" hidden>내 브라우저의 계획으로 돌아가기</button>
+    <button id="sharing-retry" hidden>다시 저장</button>
+    <button id="sharing-latest" hidden>최신 공유본 불러오기</button>
+  </div>
+  <form id="sharing-invite" hidden>
+    <label for="sharing-email">편집자의 Google 계정 이메일</label>
+    <input id="sharing-email" type="email" maxlength="254" required>
+    <button type="submit">편집 권한 추가</button>
+  </form>
+  <ul id="sharing-editors" hidden aria-label="편집자"></ul>
+</details>
+<main><div class="eyebrow">OUR NEXT HOME</div><h1>집을 향한, 차근차근 계획</h1><p>자금을 모으고, 일정을 연결하고, 남은 금액을 확인하세요.</p><div class="summary" id="summary"></div><div class="toolbar"><div class="tabs"><button id="boardtab" class="active">자금 보드</button><button id="caltab">달력 일정</button></div><div><button id="addgroup">+ 그룹</button> <button class="primary" id="additem">+ 자금 추가</button></div></div><div id="board" class="board"></div><div id="calendar" class="calendar hidden"></div><div class="note">금액 (만원) 칸에 숫자를 직접 입력하거나 막대 끝을 움직여 100만 원 단위로 조정하세요. ⋮⋮를 끌어 행의 순서나 그룹을 바꾸세요. ‘수정’에서 정확한 금액과 날짜를 입력할 수 있습니다.</div><section id="cost-board" class="cost-board" aria-labelledby="cost-heading">
 <div class="cost-head"><h2 id="cost-heading">필요금액 산정</h2><button id="addcost">+ 비용 추가</button></div>
 <p>금액은 만 원 단위로 입력하세요.</p>
 <table class="cost-table"><thead><tr><th scope="col">비용 항목</th><th scope="col">예상 금액 (만원)</th><th scope="col">편집</th></tr></thead><tbody id="costrows"></tbody></table>
@@ -68,7 +95,14 @@ function reportInvalidAmount(input) {
   input.setCustomValidity('1억 6000만원, 1.6억, 16000처럼 금액을 입력하세요.');
   input.reportValidity();
 }
+let saveSharedPlan;
+let localPlan;
+
 function persist() {
+  if (saveSharedPlan) {
+    saveSharedPlan(data);
+    return;
+  }
   try {
     localStorage.setItem('funding-planner-pages-v1', JSON.stringify(data));
   } catch {
@@ -248,7 +282,7 @@ function render({preserveEditors = false} = {}) {
     renderBoard();
     renderCostBoard();
   }
-$('#payments').innerHTML=data.payments.length?data.payments.slice().sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999')).map(p=>{let available=p.date?sum(data.items.filter(i=>i.date&&i.date<=p.date)):0,spent=p.date?sum(data.payments.filter(i=>i.date&&i.date<=p.date)):0;return `<div class="payrow"><div><b>${esc(p.name)}</b><br><small>${p.date||'날짜 미정'}${p.note?' · '+esc(p.note):''}</small></div><div style="text-align:right"><b>${money(p.amount)}</b><br><small>${p.date?(available-spent>=0?'누적 잔여 ':'누적 부족 ')+money(Math.abs(available-spent)):'날짜를 지정하면 부족액 계산'}</small></div><button data-pay="${p.id}">수정</button></div>`}).join(''):'지급 일정을 추가하세요.';document.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>open('pay',b.dataset.pay));renderCalendar()}
+$('#payments').innerHTML=data.payments.length?data.payments.slice().sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999')).map(p=>{let available=p.date?sum(data.items.filter(i=>i.date&&i.date<=p.date)):0,spent=p.date?sum(data.payments.filter(i=>i.date&&i.date<=p.date)):0;return `<div class="payrow"><div><b>${esc(p.name)}</b><br><small>${esc(p.date)||'날짜 미정'}${p.note?' · '+esc(p.note):''}</small></div><div style="text-align:right"><b>${money(p.amount)}</b><br><small>${p.date?(available-spent>=0?'누적 잔여 ':'누적 부족 ')+money(Math.abs(available-spent)):'날짜를 지정하면 부족액 계산'}</small></div><button data-pay="${esc(p.id)}">수정</button></div>`}).join(''):'지급 일정을 추가하세요.';document.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>open('pay',b.dataset.pay));renderCalendar()}
 function renderBoard() {
   const getScale = () => Math.ceil(Math.max(100000, ...data.items.map(item => item.amount * 1.1)) / 1000) * 1000;
   let scale = getScale();
@@ -256,7 +290,7 @@ function renderBoard() {
   const groupRows = data.groups.map(group => {
     const items = data.items.filter(item => item.group === group.id);
     const rows = items.map(item => `
-      <tr class="card" data-id="${item.id}">
+      <tr class="card" data-id="${esc(item.id)}">
         <td><span class="handle" draggable="true" title="끌어서 이동">⋮⋮</span> <b>${esc(item.name)}</b>
           ${item.note ? `<span class="row-note">${esc(item.note)}</span>` : ''}
         </td>
@@ -265,14 +299,14 @@ function renderBoard() {
         </div></td>
         <td class="money-cell"><div class="amount-field"><input class="inline-amount" type="text" inputmode="decimal" aria-label="${esc(item.name)} 직접 입력 (만원)" value="${item.amount}"><span aria-hidden="true">만원</span></div></td>
         <td class="date-cell">${esc(item.date || '미정')} · ${esc(item.status)}</td>
-        <td><button class="edit" data-edit="${item.id}">수정</button></td>
+        <td><button class="edit" data-edit="${esc(item.id)}">수정</button></td>
       </tr>`).join('');
-    return `<tbody data-group="${group.id}">
+    return `<tbody data-group="${esc(group.id)}">
       <tr class="group-row"><td colspan="5"><div class="grouphead">
-        <input aria-label="그룹명" value="${esc(group.name)}" data-groupname="${group.id}">
-        <span class="group-total">${money(sum(items))}</span><button class="edit" data-delgroup="${group.id}" aria-label="그룹 삭제">×</button>
+        <input aria-label="그룹명" value="${esc(group.name)}" data-groupname="${esc(group.id)}">
+        <span class="group-total">${money(sum(items))}</span><button class="edit" data-delgroup="${esc(group.id)}" aria-label="그룹 삭제">×</button>
       </div></td></tr>${rows}
-      <tr><td colspan="5"><button class="add" data-add="${group.id}">+ 항목 추가</button></td></tr>
+      <tr><td colspan="5"><button class="add" data-add="${esc(group.id)}">+ 항목 추가</button></td></tr>
     </tbody>`;
   }).join('');
 
@@ -391,8 +425,8 @@ function renderBoard() {
     };
   });
 }
-function renderCalendar(){let y=month.getFullYear(),m=month.getMonth(),first=new Date(y,m,1).getDay(),last=new Date(y,m+1,0).getDate();let cells='';for(let n=0;n<Math.ceil((first+last)/7)*7;n++){let d=n-first+1;if(d<1||d>last){cells+='<div class="day empty"></div>';continue}let date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;cells+=`<div class="day" data-date="${date}"><span class="daynum">${d}</span>${data.items.filter(i=>i.date===date).map(i=>`<button class="event" data-calitem="${i.id}">＋ ${esc(i.name)}<br>${money(i.amount)}</button>`).join('')}${data.payments.filter(i=>i.date===date).map(i=>`<button class="event out" data-calpay="${i.id}">－ ${esc(i.name)}<br>${money(i.amount)}</button>`).join('')}</div>`}$('#calendar').innerHTML=`<div class="calhead"><button id="prev">‹ 이전</button><h2>${y}년 ${m+1}월</h2><button id="next">다음 ›</button></div><div class="grid">${['일','월','화','수','목','금','토'].map(x=>`<div class="dayname">${x}</div>`).join('')}${cells}</div><div class="note" style="padding:0 16px 16px">날짜를 누르면 자금을 추가합니다. 초록색은 조달, 주황색은 지급입니다. 날짜 미정: ${data.items.filter(i=>!i.date).length}개 자금 · ${data.payments.filter(i=>!i.date).length}개 지급</div>`;$('#prev').onclick=()=>{month=new Date(y,m-1,1);renderCalendar()};$('#next').onclick=()=>{month=new Date(y,m+1,1);renderCalendar()};document.querySelectorAll('[data-date]').forEach(e=>e.onclick=()=>open('item',null,null,e.dataset.date));document.querySelectorAll('[data-calitem]').forEach(e=>e.onclick=ev=>{ev.stopPropagation();open('item',e.dataset.calitem)});document.querySelectorAll('[data-calpay]').forEach(e=>e.onclick=ev=>{ev.stopPropagation();open('pay',e.dataset.calpay)})}
-function open(type,id,group,date){kind=type;editing=id;let list=type==='item'?data.items:data.payments,i=list.find(x=>x.id===id)||{name:'',amount:'',date:date||'',group:group||data.groups[0]?.id,status:'예정',note:''},f=$('#form');$('#modaltitle').textContent=(type==='item'?'자금':'지급')+(id?' 수정':' 추가');f.elements.name.value=i.name;f.elements.amount.setCustomValidity('');f.elements.amount.value=i.amount===''?'':money(i.amount);f.elements.date.value=i.date;f.elements.note.value=i.note||'';f.elements.group.innerHTML=data.groups.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join('');f.elements.group.value=i.group;f.elements.status.value=i.status||'예정';$('#grouplabel').hidden=type!=='item';$('#statuslabel').hidden=type!=='item';$('#orderbuttons').hidden=type!=='item'||!id;$('#delete').hidden=!id;$('#modal').showModal()}
+function renderCalendar(){let y=month.getFullYear(),m=month.getMonth(),first=new Date(y,m,1).getDay(),last=new Date(y,m+1,0).getDate();let cells='';for(let n=0;n<Math.ceil((first+last)/7)*7;n++){let d=n-first+1;if(d<1||d>last){cells+='<div class="day empty"></div>';continue}let date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;cells+=`<div class="day" data-date="${date}"><span class="daynum">${d}</span>${data.items.filter(i=>i.date===date).map(i=>`<button class="event" data-calitem="${esc(i.id)}">＋ ${esc(i.name)}<br>${money(i.amount)}</button>`).join('')}${data.payments.filter(i=>i.date===date).map(i=>`<button class="event out" data-calpay="${esc(i.id)}">－ ${esc(i.name)}<br>${money(i.amount)}</button>`).join('')}</div>`}$('#calendar').innerHTML=`<div class="calhead"><button id="prev">‹ 이전</button><h2>${y}년 ${m+1}월</h2><button id="next">다음 ›</button></div><div class="grid">${['일','월','화','수','목','금','토'].map(x=>`<div class="dayname">${x}</div>`).join('')}${cells}</div><div class="note" style="padding:0 16px 16px">날짜를 누르면 자금을 추가합니다. 초록색은 조달, 주황색은 지급입니다. 날짜 미정: ${data.items.filter(i=>!i.date).length}개 자금 · ${data.payments.filter(i=>!i.date).length}개 지급</div>`;$('#prev').onclick=()=>{month=new Date(y,m-1,1);renderCalendar()};$('#next').onclick=()=>{month=new Date(y,m+1,1);renderCalendar()};document.querySelectorAll('[data-date]').forEach(e=>e.onclick=()=>open('item',null,null,e.dataset.date));document.querySelectorAll('[data-calitem]').forEach(e=>e.onclick=ev=>{ev.stopPropagation();open('item',e.dataset.calitem)});document.querySelectorAll('[data-calpay]').forEach(e=>e.onclick=ev=>{ev.stopPropagation();open('pay',e.dataset.calpay)})}
+function open(type,id,group,date){kind=type;editing=id;let list=type==='item'?data.items:data.payments,i=list.find(x=>x.id===id)||{name:'',amount:'',date:date||'',group:group||data.groups[0]?.id,status:'예정',note:''},f=$('#form');$('#modaltitle').textContent=(type==='item'?'자금':'지급')+(id?' 수정':' 추가');f.elements.name.value=i.name;f.elements.amount.setCustomValidity('');f.elements.amount.value=i.amount===''?'':money(i.amount);f.elements.date.value=i.date;f.elements.note.value=i.note||'';f.elements.group.innerHTML=data.groups.map(g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`).join('');f.elements.group.value=i.group;f.elements.status.value=i.status||'예정';$('#grouplabel').hidden=type!=='item';$('#statuslabel').hidden=type!=='item';$('#orderbuttons').hidden=type!=='item'||!id;$('#delete').hidden=!id;$('#modal').showModal()}
 $('#form').elements.amount.oninput=e=>e.target.setCustomValidity('');
 $('#form').onsubmit=e=>{e.preventDefault();let f=e.target,list=kind==='item'?data.items:data.payments;if(kind==='item'&&!data.groups.length)return toast('먼저 그룹을 추가하세요.');const amount=parseMoney(f.elements.amount.value);if(amount===null)return reportInvalidAmount(f.elements.amount);let i={id:editing||uid(),name:f.elements.name.value.trim(),amount,date:f.elements.date.value,note:f.elements.note.value.trim()};if(!i.name||!Number.isFinite(i.amount)||i.amount<0)return;if(kind==='item'){i.group=f.elements.group.value;i.status=f.elements.status.value}let idx=list.findIndex(x=>x.id===editing);if(idx>=0)list[idx]=i;else list.push(i);$('#modal').close();save();toast('저장했습니다.')};$('#cancel').onclick=()=>$('#modal').close();$('#delete').onclick=()=>{if(!confirm('이 항목을 삭제할까요?'))return;if(kind==='item')data.items=data.items.filter(i=>i.id!==editing);else data.payments=data.payments.filter(i=>i.id!==editing);$('#modal').close();save()};function move(delta){let i=data.items.findIndex(x=>x.id===editing),item=data.items[i],peers=data.items.map((x,n)=>({x,n})).filter(p=>p.x.group===item.group),p=peers.findIndex(p=>p.n===i),dest=peers[p+delta];if(dest){[data.items[i],data.items[dest.n]]=[data.items[dest.n],data.items[i]];save();toast('순서를 변경했습니다.')}}$('#up').onclick=()=>move(-1);$('#down').onclick=()=>move(1);
 $('#additem').onclick=()=>open('item');$('#addpay').onclick=()=>open('pay');$('#addgroup').onclick=()=>{let name=prompt('새 그룹 이름');if(name?.trim()){data.groups.push({id:uid(),name:name.trim()});save()}};function setView(v){view=v;$('#board').classList.toggle('hidden',v!=='board');$('#calendar').classList.toggle('hidden',v!=='calendar');$('#boardtab').classList.toggle('active',v==='board');$('#caltab').classList.toggle('active',v==='calendar')}$('#boardtab').onclick=()=>setView('board');$('#caltab').onclick=()=>setView('calendar');let timer;function toast(s){$('#toast').textContent=s;$('#toast').classList.remove('hidden');clearTimeout(timer);timer=setTimeout(()=>$('#toast').classList.add('hidden'),2500)}
@@ -419,4 +453,324 @@ $('#backup-copy').onclick = async () => {
 $('#backup-dialog').onclose = () => { $('#backup-copy').textContent = '내용 복사'; };
 $('#backup-close').onclick = () => $('#backup-dialog').close();
 $('#import').onclick=()=>$('#file').click();$('#file').onchange=async e=>{let file=e.target.files[0];if(!file)return;try{let d=JSON.parse(await file.text()),validRow=i=>i&&typeof i.id==='string'&&typeof i.name==='string'&&typeof i.amount==='number'&&Number.isFinite(i.amount)&&i.amount>=0&&typeof i.date==='string'&&(!i.date||/^\d{4}-\d{2}-\d{2}$/.test(i.date));if(!d||typeof d.target!=='number'||!Number.isFinite(d.target)||d.target<0||!Array.isArray(d.groups)||!Array.isArray(d.items)||!Array.isArray(d.payments)||!d.groups.every(g=>typeof g.id==='string'&&typeof g.name==='string')||!d.items.every(i=>validRow(i)&&d.groups.some(g=>g.id===i.group)&&['예정','확보','검토'].includes(i.status))||!d.payments.every(validRow)||new Set([...d.groups,...d.items,...d.payments].map(i=>i.id)).size!==d.groups.length+d.items.length+d.payments.length)throw Error();if(confirm('현재 계획을 백업 파일 내용으로 바꿀까요?')){data=d;save();toast('불러왔습니다.')}}catch{toast('올바른 자금 플래너 백업 파일이 아닙니다.')}e.target.value=''};render();
+
+window.fundingPlanner = {
+  read() { return structuredClone(data); },
+  showShared(plan, onSave) {
+    if (!saveSharedPlan) localPlan = data;
+    data = structuredClone(plan);
+    saveSharedPlan = onSave;
+    render();
+  },
+  showLocal() {
+    if (!saveSharedPlan) return;
+    saveSharedPlan = undefined;
+    data = localPlan;
+    localPlan = undefined;
+    for (const dialog of document.querySelectorAll('dialog[open]')) dialog.close();
+    $('#backup-text').value = '';
+    $('#backup-download').removeAttribute('href');
+    if (backupUrl) URL.revokeObjectURL(backupUrl);
+    render();
+  }
+};
+</script><script type="module">
+const panel = document.querySelector('#sharing-panel');
+const control = name => document.querySelector('#sharing-' + name);
+const planner = window.fundingPlanner;
+const planIdPattern = /^[a-f0-9-]{36}$/;
+const maxPayloadLength = 200000;
+
+function planFromPayload(payload) {
+  if (typeof payload !== 'string' || payload.length > maxPayloadLength) {
+    throw new Error('invalid-plan');
+  }
+  const plan = JSON.parse(payload);
+  const validAmount = value => Number.isFinite(value) && value >= 0;
+  const named = row => row && typeof row.name === 'string';
+  const identified = row => named(row) && typeof row.id === 'string' && row.id.length > 0;
+  const amountRow = row => named(row) && validAmount(row.amount);
+  const dated = row => identified(row) && amountRow(row) &&
+    typeof row.date === 'string' && (!row.date || /^\d{4}-\d{2}-\d{2}$/.test(row.date));
+
+  if (!plan || !validAmount(plan.target) ||
+      !Array.isArray(plan.groups) || !plan.groups.every(identified) ||
+      !Array.isArray(plan.items) || !plan.items.every(row => dated(row) &&
+        ['예정', '확보', '검토'].includes(row.status) &&
+        plan.groups.some(group => group.id === row.group)) ||
+      !Array.isArray(plan.payments) || !plan.payments.every(dated) ||
+      (plan.costs != null && (!Array.isArray(plan.costs) || !plan.costs.every(amountRow)))) {
+    throw new Error('invalid-plan');
+  }
+
+  const ids = [...plan.groups, ...plan.items, ...plan.payments].map(row => row.id);
+  if (new Set(ids).size !== ids.length) throw new Error('invalid-plan');
+  return plan;
+}
+
+function changePlanLink(id) {
+  const url = new URL(location.href);
+  if (id) url.searchParams.set('plan', id);
+  else url.searchParams.delete('plan');
+  history.replaceState(null, '', url);
+}
+
+async function setup(config) {
+  const sdk = 'https://www.gstatic.com/firebasejs/12.12.1/';
+  const [appSdk, authSdk, dbSdk] = await Promise.all([
+    import(sdk + 'firebase-app.js'),
+    import(sdk + 'firebase-auth.js'),
+    import(sdk + 'firebase-firestore.js')
+  ]);
+  const app = appSdk.initializeApp(config);
+  const auth = authSdk.getAuth(app);
+  const db = dbSdk.getFirestore(app);
+  const status = control('status');
+  let requestedId = new URL(location.href).searchParams.get('plan');
+  let currentUser;
+  let current;
+  let creating = false;
+
+  function refreshControls() {
+    const loaded = Boolean(current?.base);
+    const owner = loaded && current.latest.owner === currentUser?.uid;
+    const pending = Boolean(current?.draft);
+    control('signin').hidden = Boolean(currentUser);
+    control('signout').hidden = !currentUser;
+    control('signout').disabled = pending || creating;
+    control('create').hidden = !currentUser || Boolean(requestedId);
+    control('create').disabled = creating;
+    control('link').hidden = !loaded;
+    control('leave').hidden = !requestedId;
+    control('leave').disabled = creating || Boolean(current?.writing);
+    control('invite').hidden = !owner;
+    control('retry').hidden = !pending || !current.error || current.conflict;
+    control('latest').hidden = !current?.conflict;
+    const list = control('editors');
+    list.hidden = !owner || !current.latest.editors.length;
+    list.replaceChildren();
+    if (owner) {
+      for (const email of current.latest.editors) {
+        const row = document.createElement('li');
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.textContent = '권한 해제';
+        remove.addEventListener('click', () => updateEditor(email, false));
+        row.append(email + ' ', remove);
+        list.append(row);
+      }
+    }
+  }
+
+  function showLatest() {
+    if (!current?.latest || current.draft || current.writing) return;
+    if (document.querySelector('main :is(input,select,textarea):focus, dialog[open], .dragging')) return;
+    if (current.base?.revision === current.latest.revision) return;
+    current.base = current.latest;
+    planner.showShared(planFromPayload(current.base.payload), queueSave);
+    status.textContent = '공유 계획에 연결되었습니다.';
+    refreshControls();
+  }
+
+  function stopSharing() {
+    current?.unsubscribe?.();
+    current = undefined;
+    planner.showLocal();
+  }
+
+  function watchPlan(id) {
+    stopSharing();
+    refreshControls();
+    if (!id) {
+      status.textContent = currentUser ? '현재 브라우저의 계획을 공유할 수 있습니다.' : '공유하려면 로그인하세요.';
+      return;
+    }
+    panel.open = true;
+    if (!planIdPattern.test(id)) {
+      status.textContent = '공유 링크가 올바르지 않습니다.';
+      return;
+    }
+    if (!currentUser) {
+      status.textContent = '초대받은 Google 계정으로 로그인하세요.';
+      return;
+    }
+    status.textContent = '공유 계획을 확인하는 중입니다.';
+    const session = {ref: dbSdk.doc(db, 'fundingPlans', id)};
+    current = session;
+    session.unsubscribe = dbSdk.onSnapshot(session.ref, {includeMetadataChanges: true}, snapshot => {
+      if (current !== session || snapshot.metadata.fromCache || snapshot.metadata.hasPendingWrites) return;
+      const next = snapshot.data();
+      try {
+        if (!next) throw new Error('missing-plan');
+        planFromPayload(next.payload);
+      } catch {
+        stopSharing();
+        refreshControls();
+        status.textContent = '공유 계획을 열 수 없습니다.';
+        return;
+      }
+      session.latest = next;
+      refreshControls();
+      showLatest();
+      if (session.base && session.base.revision !== next.revision && !session.draft && !session.writing) {
+        status.textContent = '편집을 마치면 최신 공유본을 불러옵니다.';
+      }
+    }, () => {
+      if (current !== session) return;
+      stopSharing();
+      refreshControls();
+      status.textContent = '공유 계획에 연결할 수 없습니다. 초대받은 Google 계정인지 확인하세요.';
+    });
+  }
+
+  function queueSave(plan) {
+    const session = current;
+    if (!session?.base) return;
+    session.draft = JSON.stringify(plan);
+    if (session.conflict) return;
+    clearTimeout(session.timer);
+    session.timer = setTimeout(() => saveDraft(session), 250);
+    status.textContent = '공유 변경 사항을 저장하는 중입니다.';
+    refreshControls();
+  }
+
+  async function saveDraft(session) {
+    if (current !== session || !session.draft || session.writing || session.conflict) return;
+    const payload = session.draft;
+    session.writing = true;
+    session.error = false;
+    refreshControls();
+    try {
+      planFromPayload(payload);
+      const revision = session.base.revision;
+      await dbSdk.runTransaction(db, async transaction => {
+        const snapshot = await transaction.get(session.ref);
+        const server = snapshot.data();
+        if (!server) throw new Error('missing-plan');
+        if (server.revision !== revision) {
+          session.latest = server;
+          throw new Error('revision-conflict');
+        }
+        transaction.update(session.ref, {payload, revision: revision + 1});
+      });
+      if (current !== session) return;
+      session.base = {...session.base, payload, revision: revision + 1};
+      if (session.draft === payload) session.draft = undefined;
+      status.textContent = '공유 계획에 저장했습니다.';
+    } catch (error) {
+      if (current !== session) return;
+      session.error = true;
+      session.conflict = error.message === 'revision-conflict';
+      status.textContent = session.conflict
+        ? '다른 기기에서 먼저 저장했습니다. 내 수정본이 필요하면 백업한 뒤 최신 공유본을 불러오세요.'
+        : '공유본에 저장하지 못했습니다. 다시 저장하거나 백업을 내려받으세요.';
+    } finally {
+      session.writing = false;
+      if (current === session) refreshControls();
+    }
+    if (current !== session || session.error) return;
+    if (session.draft) void saveDraft(session);
+    else showLatest();
+  }
+
+  async function updateEditor(email, add) {
+    if (!current?.base || current.latest.owner !== currentUser?.uid) return;
+    try {
+      await dbSdk.updateDoc(current.ref, {
+        editors: add ? dbSdk.arrayUnion(email) : dbSdk.arrayRemove(email)
+      });
+      if (add) control('email').value = '';
+      status.textContent = add ? '편집 권한을 추가했습니다. 초대할 사람에게 공유 링크를 보내세요.' : '편집 권한을 해제했습니다.';
+    } catch {
+      status.textContent = '편집 권한을 변경하지 못했습니다. 다시 시도하세요.';
+    }
+  }
+
+  authSdk.onAuthStateChanged(auth, user => {
+    currentUser = user;
+    watchPlan(requestedId);
+  });
+  control('signin').onclick = async () => {
+    try {
+      await authSdk.signInWithPopup(auth, new authSdk.GoogleAuthProvider());
+    } catch {
+      status.textContent = '로그인하지 못했습니다. 팝업 허용 여부를 확인하고 다시 시도하세요.';
+    }
+  };
+  control('signout').onclick = async () => {
+    if (current?.draft || creating) return;
+    try {
+      await authSdk.signOut(auth);
+    } catch {
+      status.textContent = '로그아웃하지 못했습니다. 다시 시도하세요.';
+    }
+  };
+  control('create').onclick = async () => {
+    if (!currentUser || creating || requestedId) return;
+    if (!confirm('현재 브라우저의 자금 내역을 Firebase에 저장하고 공유 계획을 만들까요?')) return;
+    const owner = currentUser.uid;
+    creating = true;
+    refreshControls();
+    try {
+      const id = crypto.randomUUID();
+      const payload = JSON.stringify(planner.read());
+      planFromPayload(payload);
+      await dbSdk.setDoc(dbSdk.doc(db, 'fundingPlans', id), {owner, editors: [], payload, revision: 0});
+      if (currentUser?.uid !== owner) return;
+      requestedId = id;
+      changePlanLink(id);
+      watchPlan(id);
+    } catch {
+      status.textContent = '공유 계획을 만들지 못했습니다. 연결 상태와 내역을 확인하세요.';
+    } finally {
+      creating = false;
+      refreshControls();
+    }
+  };
+  control('invite').onsubmit = event => {
+    event.preventDefault();
+    void updateEditor(control('email').value.trim().toLowerCase(), true);
+  };
+  control('link').onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(location.href);
+      status.textContent = '공유 링크를 복사했습니다.';
+    } catch {
+      status.textContent = '브라우저 주소창에서 공유 링크를 복사하세요.';
+    }
+  };
+  control('leave').onclick = () => {
+    if (current?.writing) return;
+    if (current?.draft && !confirm('저장되지 않은 공유 변경이 있습니다. 개인 계획으로 돌아갈까요?')) return;
+    requestedId = null;
+    changePlanLink(null);
+    watchPlan(null);
+  };
+  control('retry').onclick = () => { if (current) void saveDraft(current); };
+  control('latest').onclick = () => {
+    if (!current?.conflict || !confirm('저장되지 않은 수정본을 최신 공유본으로 바꿀까요?')) return;
+    current.draft = undefined;
+    current.conflict = false;
+    current.error = false;
+    showLatest();
+    refreshControls();
+  };
+  document.addEventListener('focusout', () => setTimeout(showLatest, 0));
+  document.addEventListener('close', showLatest, true);
+  document.addEventListener('dragend', () => setTimeout(showLatest, 0));
+  window.addEventListener('online', () => {
+    if (current?.error && !current.conflict) void saveDraft(current);
+  });
+  window.addEventListener('beforeunload', event => {
+    if (current?.draft) event.preventDefault();
+  });
+  panel.hidden = false;
+  panel.open = Boolean(requestedId);
+}
+
+try {
+  await setup({"apiKey": "AIzaSyDmE-z2SS-KDgBRABwYDpPU377KF11lTsc", "authDomain": "funding-planner-4338d.firebaseapp.com", "projectId": "funding-planner-4338d", "appId": "1:602472594270:web:30c6c721b79a7d7699edcf"});
+} catch (error) {
+  console.error('Funding planner sharing could not start.', error);
+}
 </script></html>
